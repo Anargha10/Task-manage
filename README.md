@@ -38,7 +38,7 @@ Built with Next.js, Supabase, React-Query, React-Email (Resend), Tailwind CSS, a
 
 ## 🎯 About AnargTasks
 
-ProjeX is a modern task and project management app inspired by leading PM tools. It lets teams:
+AnargTasks is a modern task and project management app inspired by leading PM tools. It lets teams:
 
 * Create & manage **projects** with custom statuses, sizes, priorities, and labels
 * Invite team members via authenticated links and email invitations
