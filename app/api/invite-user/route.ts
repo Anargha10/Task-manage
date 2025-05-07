@@ -11,7 +11,8 @@ export async function POST(request: Request) {
       await request.json();
 
     const { data, error } = await resend.emails.send({
-      from: 'ProjeX <noreply@mrshadrack.com>',
+      from: 'ProjeX <noreply@imanargha.shop>',
+
       to,
       subject: 'Invitation to join a project',
       react: InviteUserEmail({
@@ -21,10 +22,11 @@ export async function POST(request: Request) {
         inviteLink: `${request.headers.get('origin')}/invites/${projectId}?role=${role}`,
       }),
     });
-
     if (error) {
-      return NextResponse.json({ error }, { status: 400 });
+      console.error('Resend error:', error); // <-- log to console for debugging
+      return NextResponse.json({ message: error.message || 'Failed to send email' }, { status: 400 });
     }
+    
 
     return NextResponse.json({ data });
   } catch (error) {

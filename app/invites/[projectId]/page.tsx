@@ -1,17 +1,17 @@
 import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
-import { notFound } from 'next/navigation';
+import { redirect, notFound } from 'next/navigation';
 
-interface Props {
-  params: Promise<{ projectId: string }>;
-  searchParams: Promise<{ role: Role }>;
+interface InvitePageProps {
+  params: { projectId: string };
+  searchParams: { role: string };
 }
 
-export default async function InvitePage({ params, searchParams }: Props) {
+export default async function InvitePage({ params, searchParams }: InvitePageProps) {
   const supabase = await createClient();
-  const { projectId } = await params;
-  const { role } = await searchParams;
+  const { projectId } = params;
+  const { role } = searchParams;
 
+  // Check auth status
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -20,7 +20,7 @@ export default async function InvitePage({ params, searchParams }: Props) {
     redirect(`/login?next=/invites/${projectId}?role=${role}`);
   }
 
-  // Check if user has been invited
+  // Check if user was invited
   const { data: projectMember, error: memberCheckError } = await supabase
     .from('project_members')
     .select('*')
@@ -30,10 +30,11 @@ export default async function InvitePage({ params, searchParams }: Props) {
     .single();
 
   if (memberCheckError || !projectMember) {
+    console.error('Invite invalid or not found:', memberCheckError?.message || 'No invitation found');
     notFound();
   }
 
-  // Update invitation status
+  // Accept the invite
   const { error: updateError } = await supabase
     .from('project_members')
     .update({
@@ -44,7 +45,10 @@ export default async function InvitePage({ params, searchParams }: Props) {
     .eq('user_id', user.id);
 
   if (updateError) {
-    throw updateError;
+    console.error('Failed to update invitation status:', updateError.message);
+    notFound();
   }
+
+  // Redirect to project dashboard
   redirect(`/projects/${projectId}`);
 }
