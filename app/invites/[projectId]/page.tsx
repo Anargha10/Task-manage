@@ -5,10 +5,9 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect, notFound } from 'next/navigation';
 
-export default async function InvitePage({ params, searchParams }) {
-  // Next.js now passes params & searchParams as promises in RSC
-  const { projectId } = await params;
-  const { role } = await searchParams;
+export default async function InvitePage({ params, searchParams }: { params: { projectId: string }, searchParams: { role?: string } }) {
+  const { projectId } = params;
+  const { role } = searchParams;
 
   const supabase = await createClient();
   const {
