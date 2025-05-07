@@ -50,7 +50,7 @@ AnargTasks is a modern task and project management app inspired by leading PM to
 
 ## 🌐 Live Demo
 
-🔗 task-manage-git-main-anargha-bhattacharjees-projects.vercel.app
+🔗[ task-manage-git-main-anargha-bhattacharjees-projects.vercel.app](https://task-manage-navy.vercel.app/)
 
 (Or deploy your own following the steps below.)
 
